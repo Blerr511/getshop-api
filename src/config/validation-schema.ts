@@ -12,6 +12,12 @@ export class ConfigSchema {
   @IsEnum(APP_ENV)
   NODE_ENV: APP_ENV;
 
+  @IsString()
+  ACCESS_TOKEN_JWT_SECRET: string;
+
+  @IsString()
+  REFRESH_TOKEN_JWT_SECRET: string;
+
   @IsNumber()
   PORT: number;
 

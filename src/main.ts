@@ -35,8 +35,8 @@ async function bootstrap(): Promise<void> {
   });
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Secro')
-    .setDescription('Secro API description')
+    .setTitle('GetShop')
+    .setDescription('GetShop API description')
     .setVersion('1.0')
     .addTag('app')
     .addBearerAuth({ type: 'apiKey', name: 'Authorization', in: 'header' })
