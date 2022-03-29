@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '@modules/entities/user.entity';
-import * as faker from 'faker';
 import { plainToClass } from 'class-transformer';
 
 export class SignInResponse {
@@ -26,12 +25,12 @@ export class SignInResponse {
   @ApiProperty()
   user: User;
 
-  @ApiProperty({ example: faker.datatype.uuid() })
+  @ApiProperty({ example: 'accessToken' })
   accessToken: string;
 
-  @ApiProperty({ example: faker.datatype.uuid() })
+  @ApiProperty({ example: 'refreshToken' })
   refreshToken: string;
 
-  @ApiProperty({ example: faker.date.future().getTime() })
+  @ApiProperty({ example: 'expiresAt' })
   expiresAt: number;
 }

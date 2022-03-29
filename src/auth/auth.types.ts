@@ -4,8 +4,9 @@ import { ITokenPayload } from '@shared/utils/JwtTokenService/JwtTokenService.abs
 export interface SignUpParams {
   name: string;
   email: string;
-  phoneNumber: string;
-  password: string;
+  phoneNumber?: string;
+  password?: string;
+  sub?: string;
 }
 
 export interface SignInParams {
@@ -40,4 +41,10 @@ export interface TokenPayload {
   accessToken: string;
   refreshToken: string;
   expiresAt: number;
+}
+
+export interface UserDto {
+  name: string;
+  email: string;
+  sub: string;
 }

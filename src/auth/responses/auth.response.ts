@@ -3,24 +3,24 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class SignUpResponse {
   @ApiProperty({
-    example: 'Success',
+    example: 'Jon',
   })
   name: string;
 
   @ApiProperty({
-    example: 'Success',
+    example: '37498765432',
   })
-  phoneNumber: string;
+  phoneNumber?: string;
 
   @ApiProperty({
-    example: 'Success',
+    example: 'jon.smith@mail.com',
   })
   email: string;
 
   @ApiProperty({
     example: 'Success',
   })
-  password: string;
+  password?: string;
 
   static from(payload: SignUpResponse): SignUpResponse {
     return plainToClass(SignUpResponse, payload);

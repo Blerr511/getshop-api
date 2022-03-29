@@ -7,9 +7,7 @@ import { AccessTokenPayload } from '../auth.types';
 @Injectable()
 export class AccessTokenService extends JwtTokenService<AccessTokenPayload> {
   readonly secret: string;
-  readonly expirationTime = this.configService.AppEnv.isDev()
-    ? 24 * 60 * 60
-    : 15 * 60;
+  readonly expirationTime = true ? 24 * 60 * 60 : 15 * 60;
 
   constructor(
     readonly jwtService: JwtService,

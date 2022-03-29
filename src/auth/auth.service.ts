@@ -3,16 +3,10 @@ import { Repository } from 'typeorm';
 
 import { User } from '@modules/entities/user.entity';
 import { Injectable, Logger } from '@nestjs/common';
-import {
-  AccessMode,
-  LoginInfo,
-  SignUpParams,
-  TokenPayload,
-} from './auth.types';
+import { SignUpParams, UserDto } from './auth.types';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AccessTokenService } from './services/AccessToken.service';
 import { RefreshTokenService } from './services/RefreshToken.service';
-import { FailedSignInError } from '@shared/errors/NotFound/FailedSignIn.error';
 
 @Injectable()
 export class AuthService {
@@ -41,28 +35,44 @@ export class AuthService {
       where: { email: email },
     });
 
-    if (!user) throw new FailedSignInError();
-
     if (user && bcrypt.compare(password, user.password)) {
-      const accessToken = await this.accessTokenService.getToken({
-        user: {
-          email: user.email,
-          id: user.id,
-        },
-      });
-
-      const expiresAt = await this.accessTokenService.getExpiry(accessToken);
-
-      const refreshToken = await this.refreshTokenService.getToken({
-        user: {
-          email: user.email,
-          id: user.id,
-        },
-      });
-
-      return { accessToken, expiresAt, refreshToken };
-    } else {
-      return 'Something went wrong';
+      return this.createToken(user);
     }
+  }
+
+  async createToken(user: User): Promise<any> {
+    const accessToken = await this.accessTokenService.getToken({
+      user: {
+        email: user.email,
+        id: user.id,
+      },
+    });
+
+    const expiresAt = this.accessTokenService.getExpiry(accessToken);
+
+    const refreshToken = await this.refreshTokenService.getToken({
+      user: {
+        email: user.email,
+        id: user.id,
+      },
+    });
+
+    return { accessToken, expiresAt, refreshToken };
+  }
+
+  async createUser(userDto: UserDto): Promise<User> {
+    const user = await this.usersRepo.save(
+      this.usersRepo.create({ ...userDto }),
+    );
+
+    return this.usersRepo.findOneOrFail(user.id);
+  }
+
+  async getUserById(userId: number): Promise<User> {
+    return this.usersRepo.findOne(userId);
+  }
+
+  async getUserBySub(sub: string): Promise<User> {
+    return this.usersRepo.findOne({ where: { sub } });
   }
 }

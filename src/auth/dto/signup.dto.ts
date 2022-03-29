@@ -1,4 +1,10 @@
-import { IsString, IsEmail, IsLowercase } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsLowercase,
+  IsNumberString,
+  IsOptional,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class SignUpDto {
@@ -12,10 +18,17 @@ export class SignUpDto {
   readonly email: string;
 
   @ApiProperty()
-  @IsLowercase()
-  readonly phoneNumber: string;
+  @IsNumberString()
+  @IsOptional()
+  readonly phoneNumber?: string;
 
   @ApiProperty()
   @IsString()
-  readonly password: string;
+  @IsOptional()
+  readonly password?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  readonly sub?: string;
 }

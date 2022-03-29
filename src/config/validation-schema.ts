@@ -38,6 +38,9 @@ export class ConfigSchema {
 
   @IsString()
   DB_PASS: string;
+
+  @IsString()
+  SESSION_SECRET: string;
 }
 
 export const validate = (config: Record<string, unknown>): ConfigSchema => {
