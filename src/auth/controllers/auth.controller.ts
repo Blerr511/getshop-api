@@ -20,8 +20,6 @@ import { SignInDto } from '../dto/signin.dto';
 import { Request, Response } from 'express';
 
 import { LoginGuard } from '../guards/login.guard';
-import { Issuer } from 'openid-client';
-import { clearConfigCache } from 'prettier';
 import { User, UserInfo } from '@shared/decorators/User';
 
 @ApiTags('Auth')
@@ -65,27 +63,4 @@ export class AuthController {
   loginCallback(@Req() req: Request & { user: any }, @Res() res: Response) {
     res.redirect('http://localhost:3000/auth');
   }
-
-  // @Get('/logout')
-  // async logout(@Req() req: Request, @Res() res: Response) {
-  //   const id_token = req.user ? req.user.id_token : undefined;
-  //   req.logout();
-  //   req.session.destroy(async (error: any) => {
-  //     const TrustIssuer = await Issuer.discover(
-  //       `${process.env.OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER}/.well-known/openid-configuration`,
-  //     );
-  //     const end_session_endpoint = TrustIssuer.metadata.end_session_endpoint;
-  //     if (end_session_endpoint) {
-  //       res.redirect(
-  //         end_session_endpoint +
-  //           '?post_logout_redirect_uri=' +
-  //           process.env
-  //             .OAUTH2_CLIENT_REGISTRATION_LOGIN_POST_LOGOUT_REDIRECT_URI +
-  //           (id_token ? '&id_token_hint=' + id_token : ''),
-  //       );
-  //     } else {
-  //       res.redirect('/');
-  //     }
-  //   });
-  // }
 }
