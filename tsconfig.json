@@ -11,8 +11,18 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-      "@shared/*": ["src/shared/*"],
-      "@modules/*": ["src/*"]
+      "@shared/*": [
+        "src/shared/*"
+      ],
+      "@modules/*": [
+        "src/*"
+      ],
+      "@getshop/arca-ipay": [
+        "libs/arca-ipay/src"
+      ],
+      "@getshop/arca-ipay/*": [
+        "libs/arca-ipay/src/*"
+      ]
     },
     "incremental": true,
     "skipLibCheck": true,
