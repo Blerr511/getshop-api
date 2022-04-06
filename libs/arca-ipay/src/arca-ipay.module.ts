@@ -2,13 +2,14 @@ import { HttpModule } from '@nestjs/axios';
 import { DynamicModule, FactoryProvider, Inject, Module } from '@nestjs/common';
 import { ArcaIpayService } from './arca-ipay.service';
 import { IPAY_OPTIONS_TOKEN } from './const';
+import { IpayRestApi } from './ipay-rest-api/ipay-rest-api.module';
 import { IPayOptions } from './types/IPayOptions';
 import {
   createOptionsFactoryProvider,
   createOptionsProvider,
 } from './utils/createOptionsProvider';
 
-const imports = [HttpModule];
+const imports = [IpayRestApi];
 const services = [ArcaIpayService];
 const exportedServices = [ArcaIpayService];
 
