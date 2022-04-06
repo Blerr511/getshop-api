@@ -32,6 +32,15 @@ export class ConfigSchema {
 
   @IsString()
   DB_PASS: string;
+
+  @IsString()
+  IPAY_API_URL: string;
+
+  @IsString()
+  IPAY_USERNAME: string;
+
+  @IsString()
+  IPAY_PASSWORD: string;
 }
 
 export const validate = (config: Record<string, unknown>): ConfigSchema => {

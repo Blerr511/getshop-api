@@ -1,31 +1,42 @@
+import { HttpModule } from '@nestjs/axios';
 import { DynamicModule, FactoryProvider, Inject, Module } from '@nestjs/common';
 import { ArcaIpayService } from './arca-ipay.service';
 import { IPAY_OPTIONS_TOKEN } from './const';
-import { IPayOptions, IPayOptionsFactory } from './types/IPayOptions';
+import { IPayOptions } from './types/IPayOptions';
+import {
+  createOptionsFactoryProvider,
+  createOptionsProvider,
+} from './utils/createOptionsProvider';
 
-@Module({
-  providers: [ArcaIpayService],
-  exports: [ArcaIpayService],
-})
+const imports = [HttpModule];
+const services = [ArcaIpayService];
+const exportedServices = [ArcaIpayService];
+
+@Module({})
 export class ArcaIpayModule {
   constructor(@Inject(IPAY_OPTIONS_TOKEN) readonly options: IPayOptions) {}
 
-  static forRootAsync(options: FactoryProvider<IPayOptions>): DynamicModule {
+  static forRootAsync(
+    options: Pick<FactoryProvider<IPayOptions>, 'useFactory' | 'inject'>,
+  ): DynamicModule {
+    const optionsProvider = createOptionsFactoryProvider(options);
+
     return {
       module: ArcaIpayModule,
-      providers: [options],
+      imports: [...imports],
+      providers: [optionsProvider, ...services],
+      exports: [...exportedServices],
     };
   }
 
   static forRoot(options: IPayOptions): DynamicModule {
+    const optionsProvider = createOptionsProvider(options);
+
     return {
       module: ArcaIpayModule,
-      providers: [
-        {
-          provide: IPAY_OPTIONS_TOKEN,
-          useValue: options,
-        },
-      ],
+      imports: [...imports],
+      providers: [optionsProvider, ...services],
+      exports: [...exportedServices],
     };
   }
 }
