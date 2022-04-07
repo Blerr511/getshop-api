@@ -1,16 +1,9 @@
-export interface RegisterPaymentInternalParams {
-  username: string;
-  password: string;
-}
-
-export type Language = string;
-
-export type Currency = number;
-
-export enum PageView {
-  MOBILE = 'MOBILE',
-  DESKTOP = 'DESKTOP',
-}
+import {
+  Currency,
+  Language,
+  PageView,
+  PaymentInternalParams,
+} from './shared.types';
 
 export interface RegisterPaymentExternalParams {
   orderNumber: string;
@@ -27,6 +20,9 @@ export interface RegisterPaymentExternalParams {
    */
   sessionTimeoutSecs?: number;
 }
+
+export type RegisterPaymentParams = RegisterPaymentExternalParams &
+  PaymentInternalParams;
 
 export interface RegisterPaymentResult {
   orderId: string;
