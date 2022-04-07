@@ -1,9 +1,17 @@
 {
-  "moduleFileExtensions": ["js", "json", "ts"],
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
   "rootDir": ".",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@getshop/arca-ipay/(.*)": "<rootDir>/../libs/arca-ipay/src/$1",
+    "@getshop/arca-ipay": "<rootDir>/../libs/arca-ipay/src"
   }
 }
