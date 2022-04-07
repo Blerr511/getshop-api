@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 
 import { User } from '@modules/entities/user.entity';
 import { Injectable, Logger } from '@nestjs/common';
-import { SignUpParams, UserDto } from './auth.types';
+import { SignUpParams, TokenPayload, UserDto } from './auth.types';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AccessTokenService } from './services/AccessToken.service';
 import { RefreshTokenService } from './services/RefreshToken.service';
@@ -27,20 +27,23 @@ export class AuthService {
       email: signupDetails.email,
       password: await bcrypt.hash(signupDetails.password, this.saltOrRounds),
     });
-    return this.usersRepo.save(user);
+    const savedUser = await this.usersRepo.save(user);
+    return this.usersRepo.findOneOrFail(savedUser.id);
   }
 
-  async signIn(email: string, password: string): Promise<any> {
+  async signIn(email: string, password: string): Promise<TokenPayload> {
     const user = await this.usersRepo.findOne({
       where: { email: email },
     });
 
     if (user && bcrypt.compare(password, user.password)) {
       return this.createToken(user);
+    } else {
+      throw new Error(`Login or Password is not correct`);
     }
   }
 
-  async createToken(user: User): Promise<any> {
+  async createToken(user: User): Promise<TokenPayload> {
     const accessToken = await this.accessTokenService.getToken({
       user: {
         email: user.email,

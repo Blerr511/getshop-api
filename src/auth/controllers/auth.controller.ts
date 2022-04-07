@@ -41,7 +41,6 @@ export class AuthController {
   @Post('sign-in')
   @HttpCode(200)
   @ApiOkResponse({
-    status: 200,
     type: SignInDto,
   })
   async signIn(@Body() dto: SignInDto): Promise<any> {
