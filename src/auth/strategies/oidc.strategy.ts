@@ -1,3 +1,4 @@
+import { GetConfigService } from '@modules/config/get-config.service';
 import { UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, Client, UserinfoResponse, TokenSet } from 'openid-client';
@@ -6,11 +7,15 @@ import { AuthService } from '../auth.service';
 export class OidcStrategy extends PassportStrategy(Strategy, 'oidc') {
   client: Client;
 
-  constructor(private readonly authService: AuthService, client: Client) {
+  constructor(
+    private readonly authService: AuthService,
+    client: Client,
+    configService: GetConfigService,
+  ) {
     super({
       client: client,
       params: {
-        redirect_uri: process.env.REDIRECT_URL,
+        redirect_uri: configService.safeGet('REDIRECT_URL'),
         scope: 'openid profile',
       },
       passReqToCallback: false,

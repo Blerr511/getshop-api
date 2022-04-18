@@ -40,6 +40,24 @@ export class ConfigSchema {
   DB_PASS: string;
 
   @IsString()
+  OIDC_ISSUER: string;
+
+  @IsString()
+  REDIRECT_URL: string;
+
+  @IsString()
+  CLIENT_SECRET: string;
+
+  @IsString()
+  CLIENT_ID: string;
+
+  @IsString()
+  CLIENT_AUTH_CALLBACK_URI: string;
+
+  @IsString()
+  CORS_ORIGIN: string;
+
+  @IsString()
   IPAY_API_URL: string;
 
   @IsString()

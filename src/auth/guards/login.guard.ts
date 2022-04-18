@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { ExecutionContext, Injectable, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 

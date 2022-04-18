@@ -2,11 +2,12 @@ import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 
 import { User } from '@modules/entities/user.entity';
-import { Injectable, Logger, UnauthorizedException,  } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { SignUpParams, TokenPayload, UserDto } from './auth.types';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AccessTokenService } from './services/AccessToken.service';
 import { RefreshTokenService } from './services/RefreshToken.service';
+
 @Injectable()
 export class AuthService {
   @InjectRepository(User) private readonly usersRepo: Repository<User>;
