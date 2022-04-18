@@ -6,6 +6,8 @@ import { AppModule } from './app.module';
 import { GetConfigService } from './config/get-config.service';
 import { json, urlencoded } from 'body-parser';
 import { useContainer as useClassValidatorContainer } from 'class-validator';
+import passport from 'passport';
+import session from 'express-session';
 
 dotenv.config();
 
@@ -31,12 +33,24 @@ async function bootstrap(): Promise<void> {
   const configService = app.get(GetConfigService);
 
   app.enableCors({
-    origin: '*',
+    origin: configService.safeGet('CORS_ORIGIN'),
+    credentials: true,
   });
 
+  app.use(
+    session({
+      secret: configService.safeGet('SESSION_SECRET'),
+      resave: true,
+      saveUninitialized: true,
+    }),
+  );
+
+  app.use(passport.initialize());
+  app.use(passport.session());
+
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Secro')
-    .setDescription('Secro API description')
+    .setTitle('GetShop')
+    .setDescription('GetShop API description')
     .setVersion('1.0')
     .addTag('app')
     .addBearerAuth({ type: 'apiKey', name: 'Authorization', in: 'header' })

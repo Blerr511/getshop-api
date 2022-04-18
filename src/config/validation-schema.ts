@@ -12,6 +12,12 @@ export class ConfigSchema {
   @IsEnum(APP_ENV)
   NODE_ENV: APP_ENV;
 
+  @IsString()
+  ACCESS_TOKEN_JWT_SECRET: string;
+
+  @IsString()
+  REFRESH_TOKEN_JWT_SECRET: string;
+
   @IsNumber()
   PORT: number;
 
@@ -32,6 +38,27 @@ export class ConfigSchema {
 
   @IsString()
   DB_PASS: string;
+
+  @IsString()
+  OIDC_ISSUER: string;
+
+  @IsString()
+  REDIRECT_URL: string;
+
+  @IsString()
+  CLIENT_SECRET: string;
+
+  @IsString()
+  CLIENT_ID: string;
+
+  @IsString()
+  CLIENT_AUTH_CALLBACK_URI: string;
+
+  @IsString()
+  CORS_ORIGIN: string;
+
+  @IsString()
+  SESSION_SECRET: string;
 
   @IsString()
   IPAY_API_URL: string;
