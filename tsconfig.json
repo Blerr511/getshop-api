@@ -17,15 +17,12 @@
       ],
       "@modules/*": [
         "src/*"
-<<<<<<< HEAD
-=======
       ],
       "@getshop/arca-ipay": [
         "libs/arca-ipay/src"
       ],
       "@getshop/arca-ipay/*": [
         "libs/arca-ipay/src/*"
->>>>>>> 797eb49044388ef8958e75782070aa8cb00862c4
       ]
     },
     "incremental": true,

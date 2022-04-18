@@ -58,6 +58,9 @@ export class ConfigSchema {
   CORS_ORIGIN: string;
 
   @IsString()
+  SESSION_SECRET: string;
+
+  @IsString()
   IPAY_API_URL: string;
 
   @IsString()
