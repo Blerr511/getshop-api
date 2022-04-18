@@ -1,4 +1,18 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "src",
+  "projects": {
+    "arca-ipay": {
+      "type": "library",
+      "root": "libs/arca-ipay",
+      "entryFile": "index",
+      "sourceRoot": "libs/arca-ipay/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/arca-ipay/tsconfig.lib.json"
+      }
+    }
+  },
+  "compilerOptions": {
+    "webpack": true
+  }
 }

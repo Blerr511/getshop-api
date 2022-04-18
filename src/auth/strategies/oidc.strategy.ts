@@ -1,23 +1,7 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import {
-  Strategy,
-  Client,
-  UserinfoResponse,
-  TokenSet,
-  Issuer,
-} from 'openid-client';
+import { Strategy, Client, UserinfoResponse, TokenSet } from 'openid-client';
 import { AuthService } from '../auth.service';
-
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const buildOpenIdClient = async () => {
-  const TrustIssuer = await Issuer.discover('https://trial-7840345.okta.com');
-  const client = new TrustIssuer.Client({
-    client_id: process.env.CLIENT_ID,
-    client_secret: process.env.CLIENT_SECRET,
-  });
-  return client;
-};
 
 export class OidcStrategy extends PassportStrategy(Strategy, 'oidc') {
   client: Client;
@@ -45,7 +29,7 @@ export class OidcStrategy extends PassportStrategy(Strategy, 'oidc') {
       if (!user) {
         user = await this.authService.createUser({
           name: userinfo.name,
-          email: userinfo.preferred_username,
+          email: userinfo.email,
           sub: userinfo.sub,
         });
       }

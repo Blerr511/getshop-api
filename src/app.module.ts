@@ -4,10 +4,10 @@ import { AppService } from './app.service';
 import { ConfigModule } from './config/config.module';
 import { DBModule } from './db/postgres/db.module';
 import { HelloWorldModule } from './hello-world/hello-world.module';
-import { AuthModule } from './auth/auth.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
-  imports: [ConfigModule, DBModule, AuthModule, HelloWorldModule],
+  imports: [ConfigModule, DBModule, HelloWorldModule, PaymentModule],
   controllers: [AppController],
   providers: [AppService],
 })

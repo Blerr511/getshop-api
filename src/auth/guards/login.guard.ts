@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { ExecutionContext, Injectable } from '@nestjs/common';
+import { ExecutionContext, Injectable, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
-export class LoginGuard extends AuthGuard('oidc') {
+export class OIDCAuthGuard extends AuthGuard('oidc') {
   canActivate = async (context: ExecutionContext) => {
     const result = (await super.canActivate(context)) as boolean;
     const request = context.switchToHttp().getRequest();
@@ -11,3 +10,5 @@ export class LoginGuard extends AuthGuard('oidc') {
     return result;
   };
 }
+
+export const OIDCAuth = () => UseGuards(OIDCAuthGuard);

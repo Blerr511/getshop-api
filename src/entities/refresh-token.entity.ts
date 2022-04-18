@@ -2,7 +2,6 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  JoinColumn,
   OneToOne,
   Unique,
 } from 'typeorm';
@@ -15,9 +14,10 @@ export class RefreshToken {
   id: number;
 
   @Column()
-  @OneToOne(() => User)
-  @JoinColumn({ name: 'id' })
   userId: number;
+
+  @OneToOne(() => User)
+  user: User;
 
   @Column()
   expireDate: Date;

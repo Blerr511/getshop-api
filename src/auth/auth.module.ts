@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './controllers/auth.controller';
@@ -10,17 +9,31 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@modules/config/config.module';
 import { RefreshToken } from '@modules/entities/refresh-token.entity';
 import { PassportModule } from '@nestjs/passport';
-import { OidcStrategy, buildOpenIdClient } from './strategies/oidc.strategy';
-import { SessionSerializer } from './serializers/session.serializer';
+import { OidcStrategy } from './strategies/oidc.strategy';
+import { Issuer } from 'openid-client';
+import { ConfigService } from '@nestjs/config';
 
 const OidcStrategyFactory = {
   provide: 'OidcStrategy',
-  useFactory: async (authService: AuthService) => {
+  useFactory: async (
+    authService: AuthService,
+    configService: ConfigService,
+  ) => {
+    const TrustIssuer = await Issuer.discover(configService.get('OIDC_ISSUER'));
     const client = await buildOpenIdClient();
     const strategy = new OidcStrategy(authService, client);
     return strategy;
   },
-  inject: [AuthService],
+  inject: [AuthService, ConfigService],
+};
+
+export const buildOpenIdClient = async () => {
+  const TrustIssuer = await Issuer.discover(process.env.OIDC_ISSUER);
+  const client = new TrustIssuer.Client({
+    client_id: process.env.CLIENT_ID,
+    client_secret: process.env.CLIENT_SECRET,
+  });
+  return client;
 };
 
 @Module({
@@ -32,7 +45,6 @@ const OidcStrategyFactory = {
   ],
   providers: [
     OidcStrategyFactory,
-    SessionSerializer,
     AuthService,
     AccessTokenService,
     RefreshTokenService,

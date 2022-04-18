@@ -40,7 +40,13 @@ export class ConfigSchema {
   DB_PASS: string;
 
   @IsString()
-  SESSION_SECRET: string;
+  IPAY_API_URL: string;
+
+  @IsString()
+  IPAY_USERNAME: string;
+
+  @IsString()
+  IPAY_PASSWORD: string;
 }
 
 export const validate = (config: Record<string, unknown>): ConfigSchema => {

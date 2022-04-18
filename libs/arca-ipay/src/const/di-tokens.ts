@@ -1,0 +1,1 @@
+export const IPAY_OPTIONS_TOKEN = '__IPAY_OPTIONS_TOKEN';
