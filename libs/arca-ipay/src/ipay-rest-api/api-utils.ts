@@ -25,7 +25,7 @@ export type IPayResponse<R extends AnyRecord> =
 export const isOK = <R extends AnyRecord>(
   response: IPayErrorResponse | IPaySuccessResponse<R>,
 ): response is IPaySuccessResponse<R> => {
-  return response.error;
+  return !response.error;
 };
 
 export const isOkPipe = <R extends IPayResponse<D>, D>(
