@@ -54,7 +54,7 @@ export class IPayRestApiService {
 
   private internalParams(): PaymentInternalParams {
     const internalParams = {
-      username: this.configService.safeGet('IPAY_USERNAME'),
+      userName: this.configService.safeGet('IPAY_USERNAME'),
       password: this.configService.safeGet('IPAY_PASSWORD'),
     };
 

@@ -1,5 +1,5 @@
 export interface PaymentInternalParams {
-  username: string;
+  userName: string;
   password: string;
 }
 
