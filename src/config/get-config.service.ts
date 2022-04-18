@@ -1,6 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { APP_ENV, ConfigSchema } from './validation-schema';
 import { Injectable } from '@nestjs/common';
+
 @Injectable()
 export class GetConfigService {
   constructor(private readonly nestConfigService: ConfigService) {}

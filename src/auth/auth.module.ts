@@ -13,6 +13,7 @@ import { PassportModule } from '@nestjs/passport';
 import { OidcStrategy } from './strategies/oidc.strategy';
 import { Issuer } from 'openid-client';
 import { GetConfigService } from '@modules/config/get-config.service';
+import { OidcAuthController } from './controllers/oidc-auth.controller';
 
 const OidcStrategyFactory = {
   provide: 'OidcStrategy',
@@ -51,6 +52,6 @@ export const buildOpenIdClient = async (configService: GetConfigService) => {
     AccessTokenService,
     RefreshTokenService,
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, OidcAuthController],
 })
 export class AuthModule {}
