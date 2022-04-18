@@ -1,13 +1,20 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { ArcaIpayService } from '@getshop/arca-ipay';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 
-import { HelloWorldDto } from './dto/hello-world.dto';
+import { HelloWorldDto, RegisterPaymentQueryDto } from './dto/hello-world.dto';
 import { HelloWorldService } from './hello-world.service';
-import { HelloWorldResponse } from './responses/hello-world.response';
+import {
+  HelloWorldResponse,
+  RegisterPaymentResponse,
+} from './responses/hello-world.response';
 
 @Controller('hello-world')
 export class HelloWorldController {
-  constructor(private readonly helloWorldService: HelloWorldService) {}
+  constructor(
+    private readonly helloWorldService: HelloWorldService,
+    private readonly ipayService: ArcaIpayService,
+  ) {}
 
   @Get('hello/:name')
   @ApiResponse({
@@ -17,5 +24,21 @@ export class HelloWorldController {
     const message = this.helloWorldService.helloWorld({ name });
 
     return HelloWorldResponse.from({ message });
+  }
+
+  @Get('pay')
+  @ApiResponse({
+    type: RegisterPaymentResponse,
+  })
+  async payment(
+    @Query() { amount, orderNumber }: RegisterPaymentQueryDto,
+  ): Promise<RegisterPaymentResponse> {
+    const result = await this.ipayService.registerPayment({
+      amount,
+      orderNumber,
+      returnUrl: 'http://example.com',
+    });
+
+    return RegisterPaymentResponse.from(result);
   }
 }
