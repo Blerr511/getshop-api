@@ -68,6 +68,18 @@ export class ConfigSchema {
 
   @IsString()
   IPAY_PASSWORD: string;
+
+  @IsString()
+  CRYPTO_SECRET_KEY: string;
+
+  @IsString()
+  WALLET_GENERATE_PASSWORD_SECRET: string;
+
+  @IsString()
+  WALLET_EMAIL_USERNAME: string;
+
+  @IsString()
+  WALLET_EMAIL_PASSWORD: string;
 }
 
 export const validate = (config: Record<string, unknown>): ConfigSchema => {

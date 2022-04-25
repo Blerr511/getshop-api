@@ -10,7 +10,8 @@ import { RefreshTokenService } from './services/RefreshToken.service';
 
 @Injectable()
 export class AuthService {
-  @InjectRepository(User) private readonly usersRepo: Repository<User>;
+  @InjectRepository(User)
+  private readonly usersRepo: Repository<User>;
 
   private readonly logger = new Logger(AuthService.name);
   private readonly saltOrRounds = bcrypt.genSaltSync(10);
