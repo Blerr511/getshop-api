@@ -1,4 +1,5 @@
-import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
+import { Wallet } from '@modules/entities/wallet.entity';
 
 @Entity()
 export class User {
@@ -19,4 +20,10 @@ export class User {
 
   @Column({ unique: true, nullable: true })
   sub?: string;
+
+  @OneToMany(() => Wallet, (wallet) => wallet.user, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
+  wallet: Wallet;
 }
