@@ -2,8 +2,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { WalletService } from './wallet.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { WalletCreateDto } from './dto/wallet.create.dto';
-import { WalletResponseDto } from './dto/wallet.response.dto';
 import { User, UserInfo } from '@shared/decorators/User';
+import { WalletQueryDto } from '@modules/wallet/dto/wallet.query.dto';
+import { WalletResponse } from './responses/wallet.response';
 import {
   Get,
   Post,
@@ -26,8 +27,9 @@ export class WalletController {
   async createWallet(
     @Body() dto: WalletCreateDto,
     @User() user: UserInfo,
-  ): Promise<WalletResponseDto> {
-    return await this.walletService.createWallet(dto, user);
+  ): Promise<WalletResponse> {
+    const wallet = await this.walletService.createWallet(dto, user);
+    return WalletResponse.from(wallet);
   }
 
   @Post('send/:recipientId/:walletId')
@@ -37,16 +39,19 @@ export class WalletController {
     @User() user: UserInfo,
     @Param('recipientId') recipientId: number,
     @Param('walletId') walletId: number,
-  ): Promise<WalletResponseDto> {
-    return await this.walletService.sendWallet(user, recipientId, walletId);
+  ): Promise<WalletResponse> {
+    const wallet = await this.walletService.sendWallet(
+      user,
+      recipientId,
+      walletId,
+    );
+    return WalletResponse.from(wallet);
   }
 
   @Get('my/all')
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
-  async getAllWalletsUser(
-    @User() user: UserInfo,
-  ): Promise<WalletResponseDto[]> {
+  async getAllWalletsUser(@User() user: UserInfo): Promise<WalletResponse[]> {
     return await this.walletService.getAllWalletsUser(user);
   }
 
@@ -55,8 +60,8 @@ export class WalletController {
   @UseGuards(AuthGuard('jwt'))
   async getOneWallet(
     @User() user: UserInfo,
-    @Query() dto: WalletResponseDto,
+    @Query() dto: WalletQueryDto,
   ): Promise<string> {
-    return await this.walletService.getOneWallet(user, dto);
+    return await this.walletService.getOneWallet(user.id, dto);
   }
 }

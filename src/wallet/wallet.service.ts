@@ -7,12 +7,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { WalletRepository } from './wallet.repository';
 import { WalletHelper } from '@modules/helpers/wallet.helper';
 import { User } from '@modules/entities/user.entity';
-import { Wallet } from '@modules/entities/wallet.entity';
 import { Repository } from 'typeorm';
 import { EmailHelper } from '@modules/helpers/email.helper';
 import { ErrorList } from '@modules/common/error-list';
-import { WalletResponseType } from '@modules/wallet/types/wallet.response.type';
-import { WalletCreateType } from '@modules/wallet/types/wallet.create.type';
+import {
+  WalletCreateInterface,
+  WalletCredentialsInterface,
+} from '@modules/wallet/wallet.types';
+import { Wallet } from '@modules/entities/wallet.entity';
 
 @Injectable()
 export class WalletService {
@@ -25,32 +27,33 @@ export class WalletService {
   ) {}
 
   async createWallet(
-    dto: WalletCreateType,
+    walletPayload: WalletCreateInterface,
     user: User,
-  ): Promise<WalletResponseType> {
+  ): Promise<Wallet> {
     const password = this.walletHelper.generatePassword();
     const checkWallet = await this.walletRepository.findOne({
       where: {
-        walletJson: dto.walletJson,
+        walletJson: walletPayload.walletJson,
       },
     });
     if (checkWallet) {
       throw new ConflictException(ErrorList.existingWallet);
     }
     const wallet = await this.walletRepository.create({
-      walletJson: this.walletHelper.hashWallet(dto.walletJson),
+      walletJson: this.walletHelper.hashWallet(walletPayload.walletJson),
       username: user.email,
       password,
       user,
     });
-    return this.walletRepository.save(wallet);
+    const savedWallet = await this.walletRepository.save(wallet);
+    return this.walletRepository.findOne(savedWallet.id);
   }
 
   async sendWallet(
     user: User,
     recipientId: number,
     walletId: number,
-  ): Promise<WalletResponseType> {
+  ): Promise<Wallet> {
     const recipient = await this.userRepository.findOne({ id: recipientId });
     if (!recipient) {
       throw new NotFoundException(ErrorList.userNotFound);
@@ -78,12 +81,15 @@ export class WalletService {
       .getMany();
   }
 
-  async getOneWallet(user: User, dto: WalletResponseType): Promise<string> {
+  async getOneWallet(
+    userId: number,
+    walletCredentials: WalletCredentialsInterface,
+  ): Promise<string> {
     const wallet = await this.walletRepository.findOne({
       where: {
-        username: dto.username,
-        password: dto.password,
-        user: user.id,
+        username: walletCredentials.username,
+        password: walletCredentials.password,
+        user: userId,
       },
     });
     if (!wallet) {

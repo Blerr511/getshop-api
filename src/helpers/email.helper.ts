@@ -1,15 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
-import { EmailConfigOptions } from '@shared/constants/email-configuration.';
+import { GetConfigService } from '@modules/config/get-config.service';
 
 @Injectable()
 export class EmailHelper {
+  constructor(private readonly configService: GetConfigService) {}
+
   sendWalletSendEmail(
     email: string,
     walletUsername: string,
     walletPassword: string,
   ): void {
-    const transporter = nodemailer.createTransport(EmailConfigOptions);
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.mail.ru',
+      port: 465,
+      secure: true,
+      auth: {
+        user: this.configService.safeGet('WALLET_EMAIL_USERNAME'),
+        pass: this.configService.safeGet('WALLET_EMAIL_PASSWORD'),
+      },
+    });
     const message = {
       to: email,
       subject: 'GetShop',
