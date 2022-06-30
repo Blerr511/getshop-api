@@ -5,6 +5,7 @@ import { WalletCreateDto } from './dto/wallet.create.dto';
 import { User, UserInfo } from '@shared/decorators/User';
 import { WalletQueryDto } from '@modules/wallet/dto/wallet.query.dto';
 import { WalletResponse } from './responses/wallet.response';
+import { LoginInfo } from '@modules/auth/auth.types';
 import {
   Get,
   Post,
@@ -26,7 +27,7 @@ export class WalletController {
   @UseGuards(AuthGuard('jwt'))
   async createWallet(
     @Body() dto: WalletCreateDto,
-    @User() user: UserInfo,
+    @User() { user }: LoginInfo,
   ): Promise<WalletResponse> {
     const wallet = await this.walletService.createWallet(dto, user);
     return WalletResponse.from(wallet);
@@ -36,7 +37,7 @@ export class WalletController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   async sendWallet(
-    @User() user: UserInfo,
+    @User() { user }: LoginInfo,
     @Param('recipientId') recipientId: number,
     @Param('walletId') walletId: number,
   ): Promise<WalletResponse> {
@@ -59,7 +60,7 @@ export class WalletController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   async getOneWallet(
-    @User() user: UserInfo,
+    @User() { user }: LoginInfo,
     @Query() dto: WalletQueryDto,
   ): Promise<string> {
     return await this.walletService.getOneWallet(user.id, dto);

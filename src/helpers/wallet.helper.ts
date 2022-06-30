@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import * as Cryptr from 'cryptr';
 import { GetConfigService } from '@modules/config/get-config.service';
+import crypto from 'crypto';
+
+const algorithm = 'aes-256-cbc';
+const initVector = crypto.randomBytes(16);
+const SecurityKey = crypto.randomBytes(32);
+const cipher = crypto.createCipheriv(algorithm, SecurityKey, initVector);
 
 @Injectable()
 export class WalletHelper {
-  private cryptr: Cryptr;
-  constructor(private readonly configService: GetConfigService) {
-    this.cryptr = new Cryptr(configService.safeGet('CRYPTO_SECRET_KEY'));
-  }
+  constructor(private readonly configService: GetConfigService) {}
   generatePassword(): string {
     const length = 16;
     const charset = this.configService.safeGet(
@@ -21,10 +23,21 @@ export class WalletHelper {
   }
 
   hashWallet(text: string): string {
-    return this.cryptr.encrypt(text);
+    let encryptedData = cipher.update(text, 'utf-8', 'hex');
+    encryptedData += cipher.final('hex');
+
+    return encryptedData;
   }
 
-  decodeWallet(text: string): string {
-    return this.cryptr.decrypt(text);
+  decodeWallet(text): string {
+    const decipher = crypto.createDecipheriv(
+      algorithm,
+      SecurityKey,
+      initVector,
+    );
+    let decryptedData = decipher.update(text, 'hex', 'utf-8');
+    decryptedData += decipher.final('utf8');
+
+    return decryptedData;
   }
 }
