@@ -14,6 +14,7 @@ import { OidcStrategy } from './strategies/oidc.strategy';
 import { Issuer } from 'openid-client';
 import { GetConfigService } from '@modules/config/get-config.service';
 import { OidcAuthController } from './controllers/oidc-auth.controller';
+import { JwtStrategy } from '@modules/auth/strategies/jwt.strategy';
 
 const OidcStrategyFactory = {
   provide: 'OidcStrategy',
@@ -23,20 +24,19 @@ const OidcStrategyFactory = {
   ) => {
     await Issuer.discover(configService.safeGet('OIDC_ISSUER'));
     const client = await buildOpenIdClient(configService);
-    const strategy = new OidcStrategy(authService, client, configService);
-    return strategy;
+    return new OidcStrategy(authService, client, configService);
   },
   inject: [AuthService, GetConfigService],
 };
+
 export const buildOpenIdClient = async (configService: GetConfigService) => {
   const TrustIssuer = await Issuer.discover(
     configService.safeGet('OIDC_ISSUER'),
   );
-  const client = new TrustIssuer.Client({
+  return new TrustIssuer.Client({
     client_id: configService.safeGet('CLIENT_ID'),
     client_secret: configService.safeGet('CLIENT_SECRET'),
   });
-  return client;
 };
 
 @Module({
@@ -51,6 +51,7 @@ export const buildOpenIdClient = async (configService: GetConfigService) => {
     AuthService,
     AccessTokenService,
     RefreshTokenService,
+    JwtStrategy,
   ],
   controllers: [AuthController, OidcAuthController],
 })
