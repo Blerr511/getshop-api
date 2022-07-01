@@ -15,6 +15,7 @@ import { Issuer } from 'openid-client';
 import { GetConfigService } from '@modules/config/get-config.service';
 import { OidcAuthController } from './controllers/oidc-auth.controller';
 import { JwtStrategy } from '@modules/auth/strategies/jwt.strategy';
+import { PassportSerializer } from './serializers/passport.serializer';
 
 const OidcStrategyFactory = {
   provide: 'OidcStrategy',
@@ -52,6 +53,7 @@ export const buildOpenIdClient = async (configService: GetConfigService) => {
     AccessTokenService,
     RefreshTokenService,
     JwtStrategy,
+    PassportSerializer,
   ],
   controllers: [AuthController, OidcAuthController],
 })
