@@ -24,7 +24,5 @@ services:
       - default
     command: npm run start
 
-volumes:
-  postgresdb:
 networks:
   default:
