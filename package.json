@@ -31,7 +31,7 @@
     "postinstall": "npm run prepare",
     "docker:services": "docker-compose -f ./containers/docker-compose.services.yml --env-file=.env",
     "docker:services:up": "npm run docker:services -- up",
-    "docker:services:down": "npm rundocker:services -- down",
+    "docker:services:down": "npm run docker:services -- down",
     "docker": "npm run docker:services -- -f ./containers/docker-compose.base.yml ",
     "docker:dev": "npm run docker -- -f ./containers/docker-compose.dev.yml",
     "docker:dev:up": "npm run docker:dev -- up",
