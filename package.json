@@ -28,7 +28,14 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prepare": "husky install",
-    "postinstall": "yarn prepare"
+    "postinstall": "yarn prepare",
+    "docker:services": "docker-compose -f ./containers/docker-compose.services.yml --env-file=.env",
+    "docker:services:up": "npm run docker:services -- up",
+    "docker:services:down": "npm rundocker:services -- down",
+    "docker": "npm run docker:services -- -f ./containers/docker-compose.base.yml ",
+    "docker:dev": "npm run docker -- -f ./containers/docker-compose.dev.yml",
+    "docker:dev:up": "npm run docker:dev -- up",
+    "docker:dev:down": "npm run docker:dev -- down"
   },
   "dependencies": {
     "@nestjs/axios": "^0.0.7",

@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+  api:
+    image: getshop-api
+    container_name: getshop-api
+    restart: always
+    working_dir: /app
+    build:
+      context: ../
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: development
+      DB_HOST: getshop_postgres
+    volumes:
+      - ../:/app
+      - /app/node_modules/
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - ${PORT}:${PORT}
+    networks:
+      - default
+    command: npm run start
+
+volumes:
+  postgresdb:
+networks:
+  default:

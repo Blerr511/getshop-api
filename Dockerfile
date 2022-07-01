@@ -4,10 +4,8 @@ WORKDIR /app
 
 RUN npm i -g @nestjs/cli
 
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 
-RUN npm i
+RUN npm ci
 
-ENV NODE_ENV="development"
-
-ADD . .
+COPY . .

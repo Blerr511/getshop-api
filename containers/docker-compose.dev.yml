@@ -1,0 +1,7 @@
+version: '3.4'
+
+services:
+  api:
+    environment:
+      NODE_ENV: development
+    command: bash -c "npm i && npm run start:dev"
