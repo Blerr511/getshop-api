@@ -30,6 +30,6 @@ export class OidcAuthController {
   @OIDCAuth()
   @Get('/callback')
   loginCallback(@Req() req: Request & { user: any }, @Res() res: Response) {
-    res.redirect(this.configService.safeGet('OIDC_ISSUER'));
+    res.redirect(this.configService.safeGet('CLIENT_AUTH_CALLBACK_URI'));
   }
 }
