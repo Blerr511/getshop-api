@@ -9,6 +9,9 @@ export class User {
   @Column()
   name: string;
 
+  @Column()
+  surname: string;
+
   @Column({ unique: true, nullable: true })
   phoneNumber?: string;
 

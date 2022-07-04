@@ -3,10 +3,11 @@ import { ITokenPayload } from '@shared/utils/JwtTokenService/JwtTokenService.abs
 
 export interface SignUpParams {
   name: string;
+  surname: string;
   email: string;
   phoneNumber?: string;
-  password?: string;
-  sub?: string;
+  password: string;
+  confirmPassword: string;
 }
 
 export interface SignInParams {

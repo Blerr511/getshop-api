@@ -2,11 +2,18 @@ import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 
 import { User } from '@modules/entities/user.entity';
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { SignUpParams, TokenPayload, UserDto } from './auth.types';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AccessTokenService } from './services/AccessToken.service';
 import { RefreshTokenService } from './services/RefreshToken.service';
+import { ErrorList } from '@modules/common/error-list';
 
 @Injectable()
 export class AuthService {
@@ -22,14 +29,21 @@ export class AuthService {
   ) {}
 
   async signUp(signupDetails: SignUpParams): Promise<User> {
-    const user = this.usersRepo.create({
-      name: signupDetails.name,
-      phoneNumber: signupDetails.phoneNumber,
+    const checkUSer = await this.usersRepo.findOne({
       email: signupDetails.email,
+    });
+    if (checkUSer) {
+      throw new ConflictException(ErrorList.existingUser);
+    }
+    if (signupDetails.password !== signupDetails.confirmPassword) {
+      throw new BadRequestException(ErrorList.passwordMatch);
+    }
+    const user = this.usersRepo.create({
+      ...signupDetails,
       password: await bcrypt.hash(signupDetails.password, this.saltOrRounds),
     });
-    const savedUser = await this.usersRepo.save(user);
-    return this.usersRepo.findOneOrFail(savedUser.id);
+
+    return this.usersRepo.save(user);
   }
 
   async signIn(email: string, password: string): Promise<TokenPayload> {

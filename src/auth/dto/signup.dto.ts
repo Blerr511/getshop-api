@@ -13,6 +13,10 @@ export class SignUpDto {
   readonly name: string;
 
   @ApiProperty()
+  @IsString()
+  readonly surname: string;
+
+  @ApiProperty()
   @IsLowercase()
   @IsEmail()
   readonly email: string;
@@ -26,6 +30,10 @@ export class SignUpDto {
   @IsString()
   @IsOptional()
   readonly password?: string;
+
+  @ApiProperty()
+  @IsString()
+  readonly confirmPassword: string;
 
   @ApiProperty()
   @IsString()
