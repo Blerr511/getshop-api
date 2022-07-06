@@ -6,6 +6,8 @@ import {
   IsOptional,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Match } from '@shared/decorators/match.decorator';
+import { ErrorList } from '@modules/common/error-list';
 
 export class SignUpDto {
   @ApiProperty()
@@ -33,6 +35,7 @@ export class SignUpDto {
 
   @ApiProperty()
   @IsString()
+  @Match('password', { message: ErrorList.passwordMatch })
   readonly confirmPassword: string;
 
   @ApiProperty()

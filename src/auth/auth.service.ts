@@ -3,7 +3,6 @@ import { Repository } from 'typeorm';
 
 import { User } from '@modules/entities/user.entity';
 import {
-  BadRequestException,
   ConflictException,
   Injectable,
   Logger,
@@ -35,15 +34,13 @@ export class AuthService {
     if (checkUSer) {
       throw new ConflictException(ErrorList.existingUser);
     }
-    if (signupDetails.password !== signupDetails.confirmPassword) {
-      throw new BadRequestException(ErrorList.passwordMatch);
-    }
     const user = this.usersRepo.create({
       ...signupDetails,
       password: await bcrypt.hash(signupDetails.password, this.saltOrRounds),
     });
 
-    return this.usersRepo.save(user);
+    const savedUser = await this.usersRepo.save(user);
+    return this.usersRepo.findOneOrFail(savedUser.id);
   }
 
   async signIn(email: string, password: string): Promise<TokenPayload> {

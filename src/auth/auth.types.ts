@@ -6,8 +6,7 @@ export interface SignUpParams {
   surname: string;
   email: string;
   phoneNumber?: string;
-  password: string;
-  confirmPassword: string;
+  password?: string;
 }
 
 export interface SignInParams {
