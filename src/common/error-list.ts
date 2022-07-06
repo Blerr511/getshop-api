@@ -5,4 +5,5 @@ export enum ErrorList {
   // USER ERRORS
   userNotFound = 'User not found',
   existingUser = 'User already existing',
+  passwordMatch = 'Password and confirm-password do not match',
 }
