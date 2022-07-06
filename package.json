@@ -15,20 +15,28 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "typeorm": "ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js",
-    "migration:generate": "yarn typeorm -- migration:generate --config ormconfig.ts --connection  --name ",
-    "migration:create": "yarn typeorm -- migration:create --config ormconfig.ts -n",
-    "migration:up": "yarn typeorm -- migration:run --config ormconfig.ts",
-    "migration:down": "yarn typeorm -- migration:revert --config ormconfig.ts",
-    "seed:create": "yarn typeorm -- migration:create --config ormconfig.seeder.ts -n",
-    "seed:up": "yarn typeorm -- migration:run --config ormconfig.seeder.ts",
-    "seed:down": "yarn typeorm -- migration:revert --config ormconfig.seeder.ts",
+    "migration:generate": "npm run typeorm -- migration:generate --config ormconfig.ts --connection  --name ",
+    "migration:create": "npm run typeorm -- migration:create --config ormconfig.ts -n",
+    "migration:up": "npm run typeorm -- migration:run --config ormconfig.ts",
+    "migration:down": "npm run typeorm -- migration:revert --config ormconfig.ts",
+    "seed:create": "npm run typeorm -- migration:create --config ormconfig.seeder.ts -n",
+    "seed:up": "npm run typeorm -- migration:run --config ormconfig.seeder.ts",
+    "seed:down": "npm run typeorm -- migration:revert --config ormconfig.seeder.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prepare": "husky install",
-    "postinstall": "yarn prepare"
+    "postinstall": "npm run prepare",
+    "docker:services": "docker-compose -f ./containers/docker-compose.services.yml --env-file=.env",
+    "docker:services:up": "npm run docker:services -- up",
+    "docker:services:down": "npm run docker:services -- down",
+    "docker": "npm run docker:services -- -f ./containers/docker-compose.base.yml ",
+    "docker:dev": "npm run docker -- -f ./containers/docker-compose.dev.yml",
+    "docker:dev:up": "npm run docker:dev -- up",
+    "docker:dev:down": "npm run docker:dev -- down",
+    "cli": "ts-node -r tsconfig-paths/register ./src/cli/cli.ts"
   },
   "dependencies": {
     "@nestjs/axios": "^0.0.7",
@@ -40,11 +48,13 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/swagger": "^5.2.0",
     "@nestjs/typeorm": "^8.0.3",
+    "@types/yargs": "^17.0.10",
     "axios": "^0.26.1",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "express-session": "^1.17.2",
+    "nestjs-command": "^3.1.1",
     "nodemailer": "^6.7.3",
     "openid-client": "^5.1.4",
     "passport": "^0.5.2",
@@ -56,7 +66,8 @@
     "rxjs": "^7.2.0",
     "swagger-ui-express": "^4.3.0",
     "typeorm": "^0.2.41",
-    "typeorm-naming-strategies": "^2.0.0"
+    "typeorm-naming-strategies": "^2.0.0",
+    "yargs": "^17.5.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.2.4",
@@ -109,6 +120,6 @@
     }
   },
   "lint-staged": {
-    "*.ts": "yarn lint"
+    "*.ts": "npm run lint"
   }
 }
