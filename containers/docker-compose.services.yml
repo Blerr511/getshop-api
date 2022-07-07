@@ -5,7 +5,7 @@ services:
     image: postgres:13.4
     container_name: getshop_postgres
     ports:
-      - '${DB_PORT}:${DB_PORT}'
+      - '${DB_PORT}:5432'
     volumes:
       - postgresdb:/var/lib/postgresql/data
       - ./db-docker:/docker-entrypoint-initdb.d
