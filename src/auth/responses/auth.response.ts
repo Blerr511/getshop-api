@@ -1,5 +1,6 @@
 import { plainToClass } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { User } from '@modules/entities/user.entity';
 
 export class SignUpResponse {
   @ApiProperty({
@@ -15,14 +16,14 @@ export class SignUpResponse {
   @ApiProperty({
     example: 'jon.smith@mail.com',
   })
-  email: string;
+  email?: string;
 
   @ApiProperty({
     example: 'Success',
   })
   password?: string;
 
-  static from(payload: SignUpResponse): SignUpResponse {
+  static from(payload: User): SignUpResponse {
     return plainToClass(SignUpResponse, payload);
   }
 }
