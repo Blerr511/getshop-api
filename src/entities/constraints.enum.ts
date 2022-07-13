@@ -1,5 +1,5 @@
 export enum ConstraintsEnum {
-  uniqueTenantName = 'uniqueTenantName',
-  uniqueTariffName = 'uniqueTariffName',
-  uniqueFeatureName = 'uniqueFeatureName',
+  uniqueTenantName = 'UQ_TENANT_NAME',
+  uniqueTariffName = 'UQ_TARIFF_NAME',
+  uniqueFeatureName = 'UQ_FEATURE_NAME',
 }
