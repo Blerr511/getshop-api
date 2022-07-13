@@ -25,6 +25,6 @@ export class TariffPricing {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  @JoinColumn({ name: 'tariff_id' })
+  @JoinColumn()
   tariff: Tariff;
 }

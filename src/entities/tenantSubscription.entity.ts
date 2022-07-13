@@ -25,16 +25,16 @@ export class TenantSubscription {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  @JoinColumn({ name: 'tenant_id' })
+  @JoinColumn()
   tenant: Tenant;
 
   @ManyToOne(() => Tariff, (tariff) => tariff.id)
-  @JoinColumn({ name: 'tariff_id' })
+  @JoinColumn()
   tariff: Tariff;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @CreateDateColumn({ name: 'updated_at' })
+  @CreateDateColumn()
   updatedAt: Date;
 }

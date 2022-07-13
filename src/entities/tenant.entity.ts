@@ -27,9 +27,9 @@ export class Tenant {
   )
   tenantSubscription: TenantSubscription;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @CreateDateColumn({ name: 'updated_at' })
+  @CreateDateColumn()
   updatedAt: Date;
 }

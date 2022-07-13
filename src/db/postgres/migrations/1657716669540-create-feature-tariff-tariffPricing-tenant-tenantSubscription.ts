@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class createFeatureTariffTariffPricingTenantTenantSubscription1657712724013
+export class createFeatureTariffTariffPricingTenantTenantSubscription1657716669540
   implements MigrationInterface
 {
   name =
-    'createFeatureTariffTariffPricingTenantTenantSubscription1657712724013';
+    'createFeatureTariffTariffPricingTenantTenantSubscription1657716669540';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
