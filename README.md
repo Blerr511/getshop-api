@@ -19,9 +19,30 @@ Rename `.env.example` into `.env`
 
 use
 
+To run application
+
 ```bash
-$ docker-compose up
+# Run services and backend
+$ npm run docker:dev:up
+
+# Down services and backend
+$ npm run docker:dev:down
 ```
+
+To run services only
+
+```bash
+# Run services
+$ npm run docker:services:up
+
+# Down services
+$ npm run docker:services:down
+
+# Run backend
+$ npm run start:dev
+```
+
+- Note this may require changes in .env
 
 ### Without docker-compose
 
@@ -30,6 +51,7 @@ $ docker-compose up
 - `npm run start:dev`
 
 ```bash
+# Install dependencies
 $ npm install
 ```
 
